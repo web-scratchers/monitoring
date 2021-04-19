@@ -15,7 +15,12 @@ def start_program(program_name):
         envINDEX_HOST = os.environ['INDEX_HOST']
         envINDEX_PORT = os.environ['INDEX_PORT']
         envTHIS_CRAWLER_PORT = os.environ['THIS_CRAWLER_PORT']
-        subprocess.Popen("cd ~/index; export INDEX_HOST=" + envINDEX_HOST + "; export INDEX_PORT=" + envINDEX_PORT + 
+        # TODO: forward the entire environment
+        # my_env = os.environ.copy()
+        # my_env["PATH"] = "/usr/sbin:/sbin:" + my_env["PATH"]
+        # subprocess.Popen(my_command, env=my_env)
+
+        subprocess.Popen("cd ~/crawler; export INDEX_HOST=" + envINDEX_HOST + "; export INDEX_PORT=" + envINDEX_PORT + 
                          "; THIS_CRAWLER_PORT=" + envTHIS_CRAWLER_PORT + " ./TestSingleCrawler 2> err1 1> /dev/null", shell=True)
 
 
