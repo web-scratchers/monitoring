@@ -1,6 +1,5 @@
 import os
 import psutil
-import subprocess
 import time
 
 from flask import Flask, request
@@ -22,19 +21,23 @@ def status():
 
     # check if program is running, if so return "success" right away
     if program in ( p.name( ) for p in psutil.process_iter( ) ):
-        return "success"
+        return "success\n"
     else:
         # if program is not running check status code of how it ended. 
-        lastModTime = os.path.getmtime( "~/crawler/seedlist.txt" )
-        epoch_time = int( time.time( ) )
-        if epoch_time - lastModTime < 120:
-            # If 0, restart it and return "success"
-            start_program( program )
-            return "success"
+        homeDir = os.getenv("HOME")
+        if os.path.exists( homeDir + "/crawler/seedlist.txt" ):
+            lastModTime = os.path.getmtime( homeDir + "/crawler/seedlist.txt" )
+            epoch_time = int( time.time( ) )
+            if epoch_time - lastModTime < 120:
+                # If 0, restart it and return "success"
+                start_program( program )
+                return "success\n"
+            else:
+                # Otherwise return "fail" and restart the program
+                start_program( program )
+                return "fail\n"
         else:
-            # Otherwise return "fail" and restart the program
-            start_program( program )
-            return "fail"
+            return "seedlist does not exist..."
 
 
 if __name__ == '__main__':
