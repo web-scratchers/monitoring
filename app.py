@@ -1,5 +1,6 @@
 import os
 import psutil
+import subprocess
 import time
 
 from flask import Flask, request
@@ -9,17 +10,13 @@ app = Flask(__name__)
 
 def start_program(program_name):
     if program_name == "index":
-        cmd1 = "cd ~/index"
-        cmd2 = "./index chunks 5000 2> errs 1> logs"
-        subprocess.run(cmd1.split())
-        subprocess.run(cmd2.split())
-        time.sleep(5)
+        subprocess.Popen("cd ~/index; ./index chunks 5000 2> errs 1> logs ")
     elif program_name == "TestSingleCrawler":
-        cmd1 = "cd ~/crawler"
-        cmd2 = "THIS_CRAWLER_PORT=8000 ./TestSingleCrawler 2> err1 1> /dev/null"
-        subprocess.run(cmd1.split())
-        subprocess.run(cmd2.split())
-        time.sleep(5)
+        envINDEX_HOST = os.environ['INDEX_HOST']
+        envINDEX_PORT = os.environ['INDEX_PORT']
+        envTHIS_CRAWLER_PORT = os.environ['THIS_CRAWLER_PORT']
+        subprocess.Popen("cd ~/index; export INDEX_HOST=" + envINDEX_HOST + "; export INDEX_PORT=" + envINDEX_PORT + 
+                         "; THIS_CRAWLER_PORT=" + envTHIS_CRAWLER_PORT + " ./TestSingleCrawler 2> err1 1> /dev/null", shell=True)
 
 
 @app.route('/status')
