@@ -9,7 +9,11 @@ app = Flask(__name__)
 def status():
     program = request.args.get('program')
 
+    # check if program is running, if so return "success" right away
 
+    # if program is not running check status code of how it ended. If 0, restart it and return "success"
+
+    # otherwise return "fail" and restart the program
 
     return 'Hello World!'
 
