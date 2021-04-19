@@ -32,7 +32,10 @@ def status():
     if program in ( p.name( ) for p in psutil.process_iter( ) ):
         return "success\n"
     else:
-        # if program is not running check status code of how it ended. 
+        # if program is not running check status code of how it ended.
+        if ( program == "index" ):
+            start_program( program )
+            return "fail\n"
         homeDir = os.getenv("HOME")
         if os.path.exists( homeDir + "/crawler/seedlist.txt" ):
             lastModTime = os.path.getmtime( homeDir + "/crawler/seedlist.txt" )
@@ -46,7 +49,8 @@ def status():
                 start_program( program )
                 return "fail\n"
         else:
-            return "seedlist does not exist..."
+            return "fail\nNo seed list\n"
+            # return "seedlist does not exist..."
 
 
 if __name__ == '__main__':
