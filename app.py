@@ -9,15 +9,22 @@ app = Flask(__name__)
 
 def start_program(program_name):
     if program_name == "index":
-        os.system("cd ~/index; ./index chunks 5000 2> errs 1> logs")
+        cmd1 = "cd ~/index"
+        cmd2 = "./index chunks 5000 2> errs 1> logs"
+        subprocess.run(cmd1.split())
+        subprocess.run(cmd2.split())
+        time.sleep(5)
     elif program_name == "TestSingleCrawler":
-        os.system("cd ~/crawler; THIS_CRAWLER_PORT=8000 ./TestSingleCrawler 2> err1 1> /dev/null")
+        cmd1 = "cd ~/crawler"
+        cmd2 = "THIS_CRAWLER_PORT=8000 ./TestSingleCrawler 2> err1 1> /dev/null"
+        subprocess.run(cmd1.split())
+        subprocess.run(cmd2.split())
+        time.sleep(5)
 
 
 @app.route('/status')
 def status():
     program = request.args.get('program')
-    print( int( time.time( ) ) )
 
     # check if program is running, if so return "success" right away
     if program in ( p.name( ) for p in psutil.process_iter( ) ):
