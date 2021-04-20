@@ -28,22 +28,45 @@ def start_program(program_name):
                          shell=True)
 
 
+def kill_process(process_name):
+    subprocess = subprocess.Popen("ps aux | grep TestSingleCrawler", stdout=subprocess.PIPE)
+    output, error = subprocess.communicate()
+    for line in output.splitlines():
+        if process_name in str(line) and "/bin/sh" not in str(line):
+            pid = int(line.split(None, 1)[0])
+            os.kill(pid, 9)
+
+
 @app.route('/status')
 def status():
     program = request.args.get('program')
-
+    home_dir = os.getenv("HOME")
+    epoch_time = int(time.time())
     # check if program is running, if so return "success" right away
     if program in (p.name() for p in psutil.process_iter()):
+        if program == "TestSingleCrawler":
+            if os.path.exists(home_dir + "/crawler/seedlist_temp.txt"):
+                last_mod_time = os.path.getmtime(home_dir + "/crawler/seedlist_temp.txt")
+                if epoch_time - last_mod_time >= 600:
+                    kill_process(program)
+                    start_program(program)
+                    os.remove(home_dir + "/crawler/seedlist_temp.txt")
+                    return "fail\tthe seedlist has been writing > 10 mins (restarted crawler)\n"
+            if os.path.exists(home_dir + "/crawler/already_crawled_urls_temp"):
+                last_mod_time = os.path.getmtime(home_dir + "/crawler/already_crawled_urls_temp")
+                if epoch_time - last_mod_time >= 600:
+                    kill_process(program)
+                    start_program(program)
+                    os.remove(home_dir + "/crawler/already_crawled_urls_temp")
+                    return "fail\tthe alreadyCrawledUrls has been writing > 10 mins (restarted crawler)\n"
         return "success\n"
     else:
         # if program is not running check status code of how it ended.
         if ( program == "index" ):
-            start_program( program )
+            start_program(program)
             return "fail\n"
-        home_dir = os.getenv("HOME")
         if os.path.exists(home_dir + "/crawler/seedlist.txt"):
             last_mod_time = os.path.getmtime(home_dir + "/crawler/seedlist.txt")
-            epoch_time = int(time.time())
             if epoch_time - last_mod_time < 120:
                 # If 0, restart it and return "success"
                 start_program(program)
