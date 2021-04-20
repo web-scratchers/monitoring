@@ -10,7 +10,7 @@ app = Flask(__name__)
 
 def start_program(program_name):
     if program_name == "index":
-        subprocess.Popen("cd ~/index; ./index chunks 5000 2> errs 1> /dev/null ", shell=True)
+        subprocess.Popen("cd ~/index; ulimit -c unlimited; ulimit -n 2048; ./index chunks 5000 2> errs 1> /dev/null ", shell=True)
     elif program_name == "TestSingleCrawler":
         index_host = os.environ['INDEX_HOST']
         index_port = os.environ['INDEX_PORT']
@@ -22,7 +22,7 @@ def start_program(program_name):
         # my_env["PATH"] = "/usr/sbin:/sbin:" + my_env["PATH"]
         # subprocess.Popen(my_command, env=my_env)
 
-        subprocess.Popen("cd ~/crawler; export INDEX_HOST=" + index_host + "; export INDEX_PORT=" + index_port +
+        subprocess.Popen("cd ~/crawler; ulimit -c unlimited; ulimit -n 2048; export INDEX_HOST=" + index_host + "; export INDEX_PORT=" + index_port +
                          "; THIS_CRAWLER_PORT=" + crawler_port + " ./TestSingleCrawler " + this_crawler_id + " " + 
                          total_crawlers + " 800 2> err1 1> /dev/null",
                          shell=True)
