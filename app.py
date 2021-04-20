@@ -10,7 +10,7 @@ app = Flask(__name__)
 
 def start_program(program_name):
     if program_name == "index":
-        subprocess.Popen("cd ~/index; ./index chunks 5000 2> errs 1> /dev/null ")
+        subprocess.Popen("cd ~/index; ./index chunks 5000 2> errs 1> /dev/null ", shell=True)
     elif program_name == "TestSingleCrawler":
         index_host = os.environ['INDEX_HOST']
         index_port = os.environ['INDEX_PORT']
