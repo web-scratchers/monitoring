@@ -33,7 +33,7 @@ def kill_process(process_name):
     output, error = sp.communicate()
     for line in output.splitlines():
         if process_name in str(line) and "/bin/sh" not in str(line):
-            pid = int(line.split(None, 1)[0])
+            pid = int(line.split(None, 1)[1])
             os.kill(pid, 9)
 
 
