@@ -51,20 +51,20 @@ def status():
                     kill_process(program)
                     start_program(program)
                     os.remove(home_dir + "/crawler/seedlist_temp.txt")
-                    return "fail\tthe seedlist has been writing > 10 mins (restarted crawler)\n"
+                    return "fail\tthe seedlist has been writing > 10 mins (restarted crawler)\n", 408
             if os.path.exists(home_dir + "/crawler/already_crawled_urls_temp"):
                 last_mod_time = os.path.getmtime(home_dir + "/crawler/already_crawled_urls_temp")
                 if epoch_time - last_mod_time >= 600:
                     kill_process(program)
                     start_program(program)
                     os.remove(home_dir + "/crawler/already_crawled_urls_temp")
-                    return "fail\tthe alreadyCrawledUrls has been writing > 10 mins (restarted crawler)\n"
+                    return "fail\tthe alreadyCrawledUrls has been writing > 10 mins (restarted crawler)\n", 408
         return "success\n"
     else:
         # if program is not running check status code of how it ended.
         if ( program == "index" ):
             start_program(program)
-            return "fail\n"
+            return "fail\n", 404
         if os.path.exists(home_dir + "/crawler/seedlist.txt"):
             last_mod_time = os.path.getmtime(home_dir + "/crawler/seedlist.txt")
             if epoch_time - last_mod_time < 120:
@@ -76,7 +76,7 @@ def status():
                 start_program(program)
                 return "fail\n", 404
         else:
-            return "fail\nNo seed list\n"
+            return "fail\nNo seed list\n", 403
             # return "seedlist does not exist..."
 
 
