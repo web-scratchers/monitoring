@@ -29,7 +29,7 @@ def start_program(program_name):
 
 
 def kill_process(process_name):
-    sp = subprocess.Popen("ps aux | grep TestSingleCrawler", stdout=subprocess.PIPE)
+    sp = subprocess.Popen("ps aux | grep TestSingleCrawler", shell=True, stdout=subprocess.PIPE)
     output, error = sp.communicate()
     for line in output.splitlines():
         if process_name in str(line) and "/bin/sh" not in str(line):
