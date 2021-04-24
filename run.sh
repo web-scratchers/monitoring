@@ -22,5 +22,7 @@ else
   echo "Usage: ./run.sh <'crawler' or 'index'>"
   exit 1
 fi
-sleep 10
+read -t 20 -p "enter 'q' to stop" inputVar
+if [ "$inputVar" = "q" ]; then
+  exit 0
 ~/monitoring/run.sh $1
