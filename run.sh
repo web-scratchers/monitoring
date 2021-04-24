@@ -25,4 +25,5 @@ fi
 read -t 20 -p "enter 'q' to stop" inputVar
 if [ "$inputVar" = "q" ]; then
   exit 0
+fi
 ~/monitoring/run.sh $1
