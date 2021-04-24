@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ulimit -c unlimited
-ulimit -n 8192
+ulimit -n 16384
 
 if [ $# -ne 1 ]; then
   echo "Usage: ./run.sh <'crawler' or 'index'>"
