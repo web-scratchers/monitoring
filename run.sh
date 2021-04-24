@@ -23,4 +23,4 @@ else
   exit 1
 fi
 sleep 10
-./run.sh $1
+~/monitoring/run.sh $1
